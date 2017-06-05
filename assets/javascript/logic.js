@@ -67,27 +67,66 @@ $(document).ready(function() {
             	// Creating and storing an image tag
             	var dunkImage = $("<img>");
             	// Setting the src attribute of the image to a property pulled off the result item
-            	dunkImage.attr("src", results[i].images.fixed_height.url);
+            	//It should be: dunkImage.attr("src", results[i].images_fixed_height_still.url);
+            	dunkImage.attr("src", results[i].images.fixed_height_still.url);
+            	//Setting the data-state attribute of the image to still
+            	dunkImage.attr("data-state", "still");
+            	//Giving each image a class, which will be used below
+            	dunkImage.addClass("dunk-video");
 
-            	// Appending the paragraph and image tag to the animalDiv
+            	// Appending the paragraph and image tag to the dunkDiv
             	dunkDiv.append(p);
             	dunkDiv.append(dunkImage);
 
-            	// Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
+            	// Prependng the dunkDiv to the HTML page in the "#dunkers" div
             	$("#dunkers").prepend(dunkDiv);
 			}
-	
+
 		});
+	});
+
+//When clicking on one of the static GIFs, it animates. When clicked again, it reverts to static.
+	var state = $(this).attr("data-state");
+
+	$("dunk-video").on("click", function() {
+
+		if (state === "still") {
+			$(this).attr("src", response.data[n].images.fixed_height.url);
+			$(this).attr("data-state", "animate");
+		} else {
+			$(this).attr("src", response.data[n].images.fixed_height_still.url);
+			$(this).attr("data-state", "still");
+		} 
+
+	});
+
+
+			 // if/else statement
+		//	 if (state === "still") {
+		//	 	$("dunk-video").on("click", function() {
+		//	 		$(this).attr("src", response.data[n].images.fixed_height.url);
+		//	 		$(this).attr("data-state", "animate");
+		//	 	    else if (state === "animate") {
+		//	 		$(this).attr("src", response.data[n].images.fixed_height_still.url);
+		//	 		$(this).attr("data-state", "still");
+			// 		else {
+		//	 			console.log("Hmm, very interesting!");
+		//	 		}
+		//	 	}
+			 	
+			 
+
+	
+		
 
 		
 
-	});
+	
 
 	
 
 });
-//When clicking on one of the static GIFs, it animates. When clicked again, it reverts to static.
-// So: on click event(s)? See: giphy-example-hw-6.html
+
 
 //Search box takes submitted data, adds it to array, and goes through same process as other buttons
 
