@@ -7,7 +7,7 @@ var topics = ["Shawn Kemp", "Michael Jordan", "Dominique Wilkins", "Julius Ervin
 
 var APIKey = "&api_key=dc6zaTOxFJmzC";
 //Do I need to put the queryURL here? Might be below
-var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topics[0] + APIKey;
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + topics[0] + APIKey;
 
 // jQuery document ready function to make sure DOM has loaded completely before running this page
 $(document).ready(function() {
@@ -41,7 +41,7 @@ $(document).ready(function() {
 		//Grabbing and storing the data-name property value in a variable
 		var dunkerName = $(this).attr("data-name");
 		// Constructing a QueryURL using the dunker name
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + dunkerName + APIKey + "&limit=10";
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + dunkerName + APIKey + "&limit=10";
 		//I'm unsure where the AJAX GET request should go but I've seen others put it first...
 		//It still seems to make more sense to put it AFTER the for loop.
 		//AJAX GET Request:
