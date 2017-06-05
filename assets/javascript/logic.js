@@ -6,24 +6,13 @@ var topics = ["Shawn Kemp", "Michael Jordan", "Dominique Wilkins", "Julius Ervin
 "Blake Griffin"];
 
 var APIKey = "&api_key=dc6zaTOxFJmzC";
-
+//Do I need to put the queryURL here? Might be below
 var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + topics[0] + APIKey;
 
 // jQuery document ready function to make sure DOM has loaded completely before running this page
 $(document).ready(function() {
 	console.log("good to go");
 	console.log(topics);
-
-	//I'm unsure where the AJAX GET request should go but I've seen others put it first...
-	//It still seems to make more sense to put it AFTER the for loop.
-	//AJAX GET Request:
-	$.ajax({
-		url: queryURL,
-		method: "GET"
-	}).done(function(response) {
-		
-	})
-
 
 	//for loop running through variable holding the array and dynamically populating buttons on DOM
 	//must also put string at index location into the created button
@@ -41,15 +30,61 @@ $(document).ready(function() {
 
 	}
 
+	
+
 	//Clicking on a button makes it go to the Giphy API and pull 10 *static* GIFs:
 	// So, an on.click event. Make sure to include $(this) in it, which makes sure only the button clicked sends
 	// it's VALUE to Giphy API.
 
-// Selecting all elements with class dunker (the buttons created above) and adding on click event
+	// Selecting all elements with class dunker (the buttons created above) and adding on click event
 	$(".dunker").on("click", function(event) {
+		//Grabbing and storing the data-name property value in a variable
+		var dunkerName = $(this).attr("data-name");
+		// Constructing a QueryURL using the dunker name
+		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + dunkerName + APIKey + "&limit=10";
+		//I'm unsure where the AJAX GET request should go but I've seen others put it first...
+		//It still seems to make more sense to put it AFTER the for loop.
+		//AJAX GET Request:
+		$.ajax({
+			url: queryURL,
+			method: "GET"
+		})
+		//Data should now be back from request
+		.done(function(response) {
+			console.log(response);
+			//Storing response data in a variable for easier use
+			var results = response.data;
 
+			// Looping through each result item
+          	for (var i = 0; i < results.length; i++) {
 
-	})
+            	// Creating and storing a div tag
+            	var dunkDiv = $("<div>");
+
+            	// Creating a paragraph tag with the result item's rating
+            	var p = $("<p>").text("Rating: " + results[i].rating);
+
+            	// Creating and storing an image tag
+            	var dunkImage = $("<img>");
+            	// Setting the src attribute of the image to a property pulled off the result item
+            	dunkImage.attr("src", results[i].images.fixed_height.url);
+
+            	// Appending the paragraph and image tag to the animalDiv
+            	dunkDiv.append(p);
+            	dunkDiv.append(dunkImage);
+
+            	// Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
+            	$("#dunkers").prepend(dunkDiv);
+			}
+	
+		});
+
+		
+
+	});
+
+	
+
 });
 //When clicking on one of the static GIFs, it animates. When clicked again, it reverts to static.
 // So: on click event(s)? See: giphy-example-hw-6.html
