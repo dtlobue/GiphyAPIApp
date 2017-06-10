@@ -38,12 +38,14 @@ $(document).ready(function() {
 
 	// Selecting all elements with class dunker (the buttons created above) and adding on click event
 	$(".dunker").on("click", function(event) {
+		event.preventDefault() // add this so your page doesn't reload
 		//Grabbing and storing the data-name property value in a variable
 		var dunkerName = $(this).attr("data-name");
 		// Constructing a QueryURL using the dunker name
 		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + dunkerName + APIKey + "&limit=10";
 		//I'm unsure where the AJAX GET request should go but I've seen others put it first...
 		//It still seems to make more sense to put it AFTER the for loop.
+		//jQuery forces you to complete the ajax request. Without it, you wouldn't have any data to loop over in the callback below
 		//AJAX GET Request:
 		$.ajax({
 			url: queryURL,
@@ -53,34 +55,34 @@ $(document).ready(function() {
 		.done(function(response) {
 			console.log(response);
 			//Storing response data in a variable for easier use
-			var results = response.data;
+			var results = response.data; // this is good practice. nice job.
 
 			// Looping through each result item
-          	for (var i = 0; i < results.length; i++) {
+          	/*->*/ for (var i = 0; i < results.length; i++) {
 
             	// Creating and storing a div tag
-            	var dunkDiv = $("<div>");
+            	/*->*/ var dunkDiv = $("<div>");
 
             	// Creating a paragraph tag with the result item's rating
-            	var p = $("<p>").text("Rating: " + results[i].rating);
+            	/*->*/ var p = $("<p>").text("Rating: " + results[i].rating);
 
             	// Creating and storing an image tag
-            	var dunkImage = $("<img>");
+            	/*->*/ var dunkImage = $("<img>");
             	// Setting the src attribute of the image to a property pulled off the result item
             	//It should be: dunkImage.attr("src", results[i].images_fixed_height_still.url);
-            	dunkImage.attr("src", results[i].images.fixed_height_still.url);
+            	/*->*/ dunkImage.attr("src", results[i].images.fixed_height_still.url);
             	//Setting the data-state attribute of the image to still
-            	dunkImage.attr("data-state", "still");
+            	/*->*/ dunkImage.attr("data-state", "still");
             	//Giving each image a class, which will be used below
-            	dunkImage.addClass("dunk-video");
+            	/*->*/ dunkImage.addClass("dunk-video");
 
             	// Appending the paragraph and image tag to the dunkDiv
-            	dunkDiv.append(p);
-            	dunkDiv.append(dunkImage);
+            	/*->*/ dunkDiv.append(p);
+            	/*->*/ dunkDiv.append(dunkImage);
 
             	// Prependng the dunkDiv to the HTML page in the "#dunkers" div
-            	$("#dunkers").prepend(dunkDiv);
-			}
+            	/*->*/ $("#dunkers").prepend(dunkDiv);
+		}/*<-------*/
 
 		});
 	});
